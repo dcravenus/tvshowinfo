@@ -106,12 +106,10 @@ function refreshShows(){
 }
 
 function updateLastUpdated(){
-    console.log(moment(last_refreshed).fromNow());
     document.getElementById('last-updated').innerHTML = moment(last_refreshed).fromNow();
 }
 
 function pollAndUpdateLastUpdated(){
-    console.log('polling: ', last_refreshed);
     setTimeout(function(){
         updateLastUpdated();
         pollAndUpdateLastUpdated();
