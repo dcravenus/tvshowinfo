@@ -127,12 +127,15 @@ function init() {
         updateLastUpdated();
         pollAndUpdateLastUpdated();
 
+        var addShowInput = document.getElementById('input-add-show');
 
-        var add_show_button = document.getElementById('button-add-show');
-        add_show_button.addEventListener('click', function(){
-            var show_query = document.getElementById('input-add-show').value;
-            searchForShow(show_query);
+        addShowInput.addEventListener('keyup', function(e) {
+            if(e.keyCode === 13) {
+                var show_query = addShowInput.value;
+                searchForShow(show_query);
+            }
         });
+
         var refresh_shows_button = document.getElementById('button-refresh-shows');
         refresh_shows_button.addEventListener('click', function(){
             refreshShows();

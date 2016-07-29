@@ -1,0 +1,11 @@
+i {
+  cursor: pointer;
+}
+
+i:hover {
+  color: lightgray;
+}
+
+i:active {
+  color: darkgray;
+}
