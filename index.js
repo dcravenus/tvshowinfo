@@ -40,7 +40,7 @@ function appendShow(show_data){
     <div class='container-fluid' id='show-container-<%=id%>'>
         <div class='row'>
             <div class='col-md-3'>
-                <h3><%=name%> <button onclick="removeShow(<%=id%>)">Remove</button></h3>
+                <h3><%=name%> <i onclick="removeShow(<%=id%>)"class='fa fa-times'></i></h3>
                 <img src="<%=image.medium%>" />
             </div>
             <div class='col-md-9'>
