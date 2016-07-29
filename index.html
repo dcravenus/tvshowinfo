@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css">
     <script src="lib/localforage.min.js"></script>
     <script src="lib/ejs.min.js"></script>
+    <script src="lib/moment.min.js"></script>
 
     <script src="index.js"></script>
 </head>
@@ -17,6 +18,8 @@
             <div class='col-md-12'>
                 <input id='input-add-show' placeholder='Type a show title to add'>
                 <button id='button-add-show'>Add Show</button>
+                <button id='button-refresh-shows'>Refresh</button>
+                <p>Last updated: <span id='last-updated'></span></p>
             </div>
         </div>
     </div>

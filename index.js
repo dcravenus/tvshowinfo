@@ -40,7 +40,7 @@ function appendShow(show_data){
     <div class='container-fluid' id='show-container-<%=id%>'>
         <div class='row'>
             <div class='col-md-3'>
-                <h3><%=name%> <button onclick="removeShow(<%=id%>)">Remove</button><button onclick="refreshShow(<%=id%>)">Refresh</button></h3>
+                <h3><%=name%> <button onclick="removeShow(<%=id%>)">Remove</button></h3>
                 <img src="<%=image.medium%>" />
             </div>
             <div class='col-md-9'>
@@ -95,13 +95,47 @@ function refreshShow(show_id){
     });
 }
 
+function refreshShows(){
+    last_refreshed = Date.now();
+    localforage.setItem('last_refreshed', last_refreshed);
+
+    updateLastUpdated();
+    shows.forEach(function(show){
+        refreshShow(show.id);
+    });
+}
+
+function updateLastUpdated(){
+    console.log(moment(last_refreshed).fromNow());
+    document.getElementById('last-updated').innerHTML = moment(last_refreshed).fromNow();
+}
+
+function pollAndUpdateLastUpdated(){
+    console.log('polling: ', last_refreshed);
+    setTimeout(function(){
+        updateLastUpdated();
+        pollAndUpdateLastUpdated();
+    },10000);
+}
+
 function init() {
 
+
+
     document.addEventListener("DOMContentLoaded", function(event) {
+
+        updateLastUpdated();
+        pollAndUpdateLastUpdated();
+
+
         var add_show_button = document.getElementById('button-add-show');
         add_show_button.addEventListener('click', function(){
             var show_query = document.getElementById('input-add-show').value;
             searchForShow(show_query);
+        });
+        var refresh_shows_button = document.getElementById('button-refresh-shows');
+        refresh_shows_button.addEventListener('click', function(){
+            refreshShows();
         });
     });
 
@@ -113,8 +147,16 @@ function init() {
         shows.forEach(function(show){
             appendShow(show);
         });
+
+        //refreshShows();
+    });
+
+    localforage.getItem('last_refreshed').then(function(data){
+        last_refreshed = data ? data : 0;
+        updateLastUpdated();
     });
 }
 
 var shows = []
+var last_refreshed = 0;
 init();
