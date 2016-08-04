@@ -35,33 +35,8 @@ function getShowData(show_id) {
 }
 
 function appendShow(show_data){
-    var template =
-    `
-    <div class='container-fluid' id='show-container-<%=id%>'>
-        <div class='row'>
-            <div class='col-md-3'>
-                <h3><%=name%> <i onclick="removeShow(<%=id%>)"class='fa fa-times'></i></h3>
-                <img src="<%=image.medium%>" />
-            </div>
-            <div class='col-md-9'>
-                <h4>Latest Episode: S<%=_embedded.previousepisode.season%>E<%=_embedded.previousepisode.number%> - <%=_embedded.previousepisode.name%></h4>
-
-                <div style='overflow-y:scroll; height:300px;'>
-                    <table class='table'>
-                    <tr><th>Season</th><th>Episode</th><th>Name</th><th>Airdate</th></tr>
-                    <% _embedded.episodes.forEach(function(episode){%>
-                        <tr><td><%=episode.season%></td><td><%=episode.number%></td><td><%=episode.name%></td><td><%=episode.airdate%></td></tr>
-                    <%})%>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <hr>
-    </div>
-    `;
     var show_div = document.createElement('div');
-    var compiled_template = ejs.compile(template);
-    show_div.innerHTML = compiled_template(show_data);
+    show_div.innerHTML = new EJS({url: 'show_container.ejs'}).render(show_data);
 
     var old_show_div = document.getElementById('show-container-'+show_data.id);
     if(old_show_div){
@@ -114,6 +89,16 @@ function pollAndUpdateLastUpdated(){
         updateLastUpdated();
         pollAndUpdateLastUpdated();
     },10000);
+}
+
+function toggleSeason(season_id){
+    var el = document.getElementById(season_id);
+
+    if(el.style.display === 'none') {
+        el.style.display = '';
+    } else {
+        el.style.display = 'none';
+    }
 }
 
 function init() {
