@@ -1,11 +1,33 @@
-i {
+body {
+  margin: 0 auto;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+
+  width: 20em;
+  background-color: darkslateblue;
+
+  padding: 1em;
+}
+
+div[id*="show-title"] {
   cursor: pointer;
 }
 
-i:hover {
-  color: lightgray;
+#show-content {
+  margin-left: 22em;
+
+  padding: 1em;
 }
 
-i:active {
-  color: darkgray;
+/* CSS Tricks Pretty hr */
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }

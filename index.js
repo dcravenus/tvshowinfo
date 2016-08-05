@@ -19,6 +19,11 @@ function removeShow(show_id) {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
     }
+
+    var node = document.getElementById("show-title-"+show_id);
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
 }
 
 function getShowData(show_id) {
@@ -36,7 +41,10 @@ function getShowData(show_id) {
 
 function appendShow(show_data){
     var show_div = document.createElement('div');
+    var show_title_div = document.createElement('div');
+
     show_div.innerHTML = new EJS({url: 'show_container.ejs'}).render(show_data);
+    show_title_div.innerHTML = new EJS({url: 'show_title.ejs'}).render(show_data);
 
     var old_show_div = document.getElementById('show-container-'+show_data.id);
     if(old_show_div){
@@ -44,7 +52,8 @@ function appendShow(show_data){
         parent.innerHTML = '';
         parent.appendChild(show_div);
     } else {
-        document.body.appendChild(show_div);
+        document.getElementById('show-content').appendChild(show_div);
+        document.getElementById('sidebar').appendChild(show_title_div);
     }
 }
 
@@ -101,9 +110,11 @@ function toggleSeason(season_id){
     }
 }
 
+function showShow(show_id){
+    document.getElementById('show-container-'+show_id).scrollIntoView();
+}
+
 function init() {
-
-
 
     document.addEventListener("DOMContentLoaded", function(event) {
 

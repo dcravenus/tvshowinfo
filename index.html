@@ -3,27 +3,28 @@
     <title>TV Showtimes</title>
 
     <!-- Libraries -->
-    <link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="lib/font-awesome-4.6.3/css/font-awesome.min.css">
     <script src="lib/localforage.min.js"></script>
     <script src="lib/ejs_production.js"></script>
     <script src="lib/moment.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="lib/normalize.css">
 
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="index.js"></script>
 </head>
 
 <body>
-    <br>
-    <div class='container-fluid'>
-        <div class='row'>
-            <div class='col-md-12'>
-                <input id='input-add-show' placeholder='Type a show title to add'>
-                <p>
-                    <i id='button-refresh-shows' class="fa fa-refresh"></i>
-                    Last updated: <span id='last-updated'></span>
-                </p>
-            </div>
+    <div>
+        <div id="sidebar">
+            <input id='input-add-show' placeholder='Type a show title to add'>
+            <p>
+                <i id='button-refresh-shows' class="fa fa-refresh"></i>
+                Last updated: <span id='last-updated'></span>
+            </p>
+            <hr>
         </div>
+        <div id="show-content"></div>
     </div>
+
 </body>
