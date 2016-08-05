@@ -12,6 +12,12 @@ body {
   background-color: darkslateblue;
 
   padding: 1em;
+
+  color: #d8d8d8;
+}
+
+#sidebar input {
+  width: 20em;
 }
 
 div[id*="show-title"] {
@@ -22,6 +28,8 @@ div[id*="show-title"] {
   margin-left: 22em;
 
   padding: 1em;
+
+  color: #3c3c3c;
 }
 
 /* CSS Tricks Pretty hr */
@@ -30,4 +38,10 @@ hr {
     height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
 }
