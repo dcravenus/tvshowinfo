@@ -114,6 +114,16 @@ function showShow(show_id){
     document.getElementById('show-container-'+show_id).scrollIntoView();
 }
 
+function sortShowByName(a, b){
+    if (a.name < b.name) {
+        return -1;
+    }
+    if (a.name > b.name) {
+        return 1;
+    }
+    return 0;
+}
+
 function init() {
 
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -141,7 +151,7 @@ function init() {
             shows = shows_data;
         }
 
-        shows.forEach(function(show){
+        shows.sort(sortShowByName).forEach(function(show){
             appendShow(show);
         });
 
