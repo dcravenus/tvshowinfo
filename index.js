@@ -19,6 +19,11 @@ function removeShow(show_id) {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
     }
+
+    var node = document.getElementById("show-title-"+show_id);
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
 }
 
 function getShowData(show_id) {
@@ -35,33 +40,11 @@ function getShowData(show_id) {
 }
 
 function appendShow(show_data){
-    var template =
-    `
-    <div class='container-fluid' id='show-container-<%=id%>'>
-        <div class='row'>
-            <div class='col-md-3'>
-                <h3><%=name%> <button onclick="removeShow(<%=id%>)">Remove</button><button onclick="refreshShow(<%=id%>)">Refresh</button></h3>
-                <img src="<%=image.medium%>" />
-            </div>
-            <div class='col-md-9'>
-                <h4>Latest Episode: S<%=_embedded.previousepisode.season%>E<%=_embedded.previousepisode.number%> - <%=_embedded.previousepisode.name%></h4>
-
-                <div style='overflow-y:scroll; height:300px;'>
-                    <table class='table'>
-                    <tr><th>Season</th><th>Episode</th><th>Name</th><th>Airdate</th></tr>
-                    <% _embedded.episodes.forEach(function(episode){%>
-                        <tr><td><%=episode.season%></td><td><%=episode.number%></td><td><%=episode.name%></td><td><%=episode.airdate%></td></tr>
-                    <%})%>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <hr>
-    </div>
-    `;
     var show_div = document.createElement('div');
-    var compiled_template = ejs.compile(template);
-    show_div.innerHTML = compiled_template(show_data);
+    var show_title_div = document.createElement('div');
+
+    show_div.innerHTML = new EJS({url: 'show_container.ejs'}).render(show_data);
+    show_title_div.innerHTML = new EJS({url: 'show_title.ejs'}).render(show_data);
 
     var old_show_div = document.getElementById('show-container-'+show_data.id);
     if(old_show_div){
@@ -69,7 +52,8 @@ function appendShow(show_data){
         parent.innerHTML = '';
         parent.appendChild(show_div);
     } else {
-        document.body.appendChild(show_div);
+        document.getElementById('show-content').appendChild(show_div);
+        document.getElementById('sidebar').appendChild(show_title_div);
     }
 }
 
@@ -95,13 +79,70 @@ function refreshShow(show_id){
     });
 }
 
+function refreshShows(){
+    last_refreshed = Date.now();
+    localforage.setItem('last_refreshed', last_refreshed);
+
+    updateLastUpdated();
+    shows.forEach(function(show){
+        refreshShow(show.id);
+    });
+}
+
+function updateLastUpdated(){
+    document.getElementById('last-updated').innerHTML = moment(last_refreshed).fromNow();
+}
+
+function pollAndUpdateLastUpdated(){
+    setTimeout(function(){
+        updateLastUpdated();
+        pollAndUpdateLastUpdated();
+    },10000);
+}
+
+function toggleSeason(season_id){
+    var el = document.getElementById(season_id);
+
+    if(el.style.display === 'none') {
+        el.style.display = '';
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+function showShow(show_id){
+    document.getElementById('show-container-'+show_id).scrollIntoView();
+}
+
+function sortShowByName(a, b){
+    if (a.name < b.name) {
+        return -1;
+    }
+    if (a.name > b.name) {
+        return 1;
+    }
+    return 0;
+}
+
 function init() {
 
     document.addEventListener("DOMContentLoaded", function(event) {
-        var add_show_button = document.getElementById('button-add-show');
-        add_show_button.addEventListener('click', function(){
-            var show_query = document.getElementById('input-add-show').value;
-            searchForShow(show_query);
+
+        updateLastUpdated();
+        pollAndUpdateLastUpdated();
+
+        var addShowInput = document.getElementById('input-add-show');
+
+        addShowInput.addEventListener('keyup', function(e) {
+            if(e.keyCode === 13) {
+                var show_query = addShowInput.value;
+                searchForShow(show_query);
+            }
+        });
+
+        var refresh_shows_button = document.getElementById('button-refresh-shows');
+        refresh_shows_button.addEventListener('click', function(){
+            refreshShows();
         });
     });
 
@@ -110,11 +151,19 @@ function init() {
             shows = shows_data;
         }
 
-        shows.forEach(function(show){
+        shows.sort(sortShowByName).forEach(function(show){
             appendShow(show);
         });
+
+        //refreshShows();
+    });
+
+    localforage.getItem('last_refreshed').then(function(data){
+        last_refreshed = data ? data : 0;
+        updateLastUpdated();
     });
 }
 
 var shows = []
+var last_refreshed = 0;
 init();
