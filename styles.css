@@ -25,6 +25,7 @@ div[id*="show-title"] {
 }
 
 #show-content {
+  display: block;
   margin-left: 22em;
 
   padding: 1em;

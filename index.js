@@ -3,7 +3,8 @@ function addShow(show_id) {
         getShowData(show_id).then(function(data){
             shows.push(data);
             localforage.setItem('shows', shows);
-            appendShow(data);
+            riot.mount('show-content', {'shows': shows});
+            riot.mount('show-sidebar', {'shows': shows});
         });
     }
 }
@@ -13,17 +14,8 @@ function removeShow(show_id) {
         return show.id != show_id;
     });
     localforage.setItem('shows', shows);
-
-    //Remove show from DOM
-    var node = document.getElementById("show-container-"+show_id);
-    if (node.parentNode) {
-      node.parentNode.removeChild(node);
-    }
-
-    var node = document.getElementById("show-title-"+show_id);
-    if (node.parentNode) {
-      node.parentNode.removeChild(node);
-    }
+    riot.mount('show-content', {'shows': shows});
+    riot.mount('show-sidebar', {'shows': shows});
 }
 
 function getShowData(show_id) {
@@ -37,24 +29,6 @@ function getShowData(show_id) {
         })
     });
     return promise;
-}
-
-function appendShow(show_data){
-    var show_div = document.createElement('div');
-    var show_title_div = document.createElement('div');
-
-    show_div.innerHTML = new EJS({url: 'show_container.ejs'}).render(show_data);
-    show_title_div.innerHTML = new EJS({url: 'show_title.ejs'}).render(show_data);
-
-    var old_show_div = document.getElementById('show-container-'+show_data.id);
-    if(old_show_div){
-        var parent = old_show_div.parentNode;
-        parent.innerHTML = '';
-        parent.appendChild(show_div);
-    } else {
-        document.getElementById('show-content').appendChild(show_div);
-        document.getElementById('sidebar').appendChild(show_title_div);
-    }
 }
 
 function searchForShow(show_query){
@@ -73,9 +47,10 @@ function refreshShow(show_id){
             if(show.id === show_id) {
                 shows[index] = show_data;
             }
-            appendShow(show_data);
         });
-        localforage.setItem('shows', shows)
+        localforage.setItem('shows', shows);
+        riot.mount('show-content', {'shows': shows});
+        riot.mount('show-sidebar', {'shows': shows});
     });
 }
 
@@ -90,7 +65,9 @@ function refreshShows(){
 }
 
 function updateLastUpdated(){
-    document.getElementById('last-updated').innerHTML = moment(last_refreshed).fromNow();
+    if(last_refreshed){
+        document.getElementById('last-updated').innerHTML = moment(last_refreshed).fromNow();
+    }
 }
 
 function pollAndUpdateLastUpdated(){
@@ -124,6 +101,19 @@ function sortShowByName(a, b){
     return 0;
 }
 
+function loadShows() {
+    localforage.getItem('shows').then(function(shows_data){
+        if (shows_data) {
+            shows = shows_data;
+        }
+
+        shows.sort(sortShowByName);
+        riot.mount('show-content', {'shows': shows});
+        riot.mount('show-sidebar', {'shows': shows});
+
+    });
+}
+
 function init() {
 
     document.addEventListener("DOMContentLoaded", function(event) {
@@ -144,19 +134,12 @@ function init() {
         refresh_shows_button.addEventListener('click', function(){
             refreshShows();
         });
+
+
     });
 
-    localforage.getItem('shows').then(function(shows_data){
-        if (shows_data) {
-            shows = shows_data;
-        }
+    loadShows();
 
-        shows.sort(sortShowByName).forEach(function(show){
-            appendShow(show);
-        });
-
-        //refreshShows();
-    });
 
     localforage.getItem('last_refreshed').then(function(data){
         last_refreshed = data ? data : 0;

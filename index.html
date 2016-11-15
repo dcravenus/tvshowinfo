@@ -2,16 +2,10 @@
 <head>
     <title>TV Showtimes</title>
 
-    <!-- Libraries -->
     <link rel="stylesheet" type="text/css" href="lib/font-awesome-4.6.3/css/font-awesome.min.css">
-    <script src="lib/localforage.min.js"></script>
-    <script src="lib/ejs_production.js"></script>
-    <script src="lib/moment.min.js"></script>
-
     <link rel="stylesheet" type="text/css" href="lib/normalize.css">
-
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="index.js"></script>
+
 </head>
 
 <body>
@@ -23,8 +17,25 @@
                 Last updated: <span id='last-updated'></span>
             </p>
             <hr>
+            <show-sidebar></show-sidebar>
         </div>
-        <div id="show-content"></div>
+        <show-content id="show-content"></show-content>
     </div>
+
+
+    <!-- Riot Tags -->
+    <script src="show.tag" type="riot/tag"></script>
+    <script src="show-content.tag" type="riot/tag"></script>
+    <script src="show-title.tag" type="riot/tag"></script>
+    <script src="show-sidebar.tag" type="riot/tag"></script>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/riot/2.5/riot+compiler.min.js"></script>
+    <script src="lib/localforage.min.js"></script>
+    <script src="lib/moment.min.js"></script>
+
+    <script src="index.js"></script>
+
+
 
 </body>
