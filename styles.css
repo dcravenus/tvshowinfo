@@ -16,16 +16,11 @@ body {
   color: #d8d8d8;
 }
 
-#sidebar input {
-  width: 20em;
-}
-
 div[id*="show-title"] {
   cursor: pointer;
 }
 
 #show-content {
-  margin-left: 22em;
 
   padding: 1em;
 
@@ -44,4 +39,44 @@ hr {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+}
+
+@media (max-width: 720px) {
+  #sidebar {
+    position: relative;
+    width: 100%;
+  }
+
+  #sidebar input {
+    width: calc(100% - 2em);
+    font-size: 120%;
+  }
+
+  #sidebar hr {
+    display: none;
+  }
+
+
+  div[id*="show-title"] {
+    display: none;
+  }
+
+  .show-container {
+    text-align: center;
+    font-size: 120%;
+  }
+
+  .show-container .flex-container {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 721px) {
+  #show-content {
+    margin-left: 22em;
+  }
+
+  #sidebar input {
+    width: 20em;
+  }
 }
