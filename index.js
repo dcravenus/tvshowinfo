@@ -90,7 +90,13 @@ function refreshShows(){
 }
 
 function updateLastUpdated(){
-    document.getElementById('last-updated').innerHTML = moment(last_refreshed).fromNow();
+    var lastUpdatedTag = document.getElementById('last-updated');
+
+    if(last_refreshed) {
+        lastUpdatedTag.innerHTML = moment(last_refreshed).fromNow();
+    } else {
+        lastUpdatedTag.innerHTML = 'never';
+    }
 }
 
 function pollAndUpdateLastUpdated(){
