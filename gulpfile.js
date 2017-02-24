@@ -3,14 +3,32 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var htmlreplace = require('gulp-html-replace');
 var cleanCSS = require('gulp-clean-css');
+var babel = require('gulp-babel');
 
-var jsFiles = [
-  'lib/*.js',
-  //'index.js'
-];
 var jsDest = 'dist/scripts';
 
-gulp.task('js', function() {
+var cssFiles = [
+  'node_modules/font-awesome/css/font-awesome.min.css',
+  'node_modules/normalizecss/normalize.css',
+  'styles.css'
+];
+
+var jsFiles = [
+  'node_modules/localforage/dist/localforage.min.js',
+  'lib/ejs_production.js',
+  'node_modules/moment/min/moment.min.js',
+  'dist/scripts/index.js'
+];
+
+gulp.task('es6', function() {
+  return gulp.src('index.js')
+    .pipe(babel({
+      presets: ['es2015']
+    }))
+    .pipe(gulp.dest('dist/scripts'));
+})
+
+gulp.task('js', ['es6'], function() {
   return gulp.src(jsFiles)
     .pipe(concat('scripts.js'))
     .pipe(uglify())
@@ -27,7 +45,7 @@ gulp.task('index', function() {
 });
 
 gulp.task('css', function() {
-  return gulp.src(['styles.css', 'lib/*.css', 'lib/font-awesome-4.6.3/css/font-awesome.min.css'])
+  return gulp.src(cssFiles)
     .pipe(concat('styles.css'))
     .pipe(cleanCSS())
     .pipe(gulp.dest('dist/styles'));
