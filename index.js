@@ -144,7 +144,6 @@ function init() {
                 var show_query = addShowInput.value;
                 searchForShow(show_query);
             }
-            document.getElementById('foo').innerHTML = e.keyCode;
         });
 
         var refresh_shows_button = document.getElementById('button-refresh-shows');
