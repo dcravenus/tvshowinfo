@@ -170,6 +170,6 @@ function init() {
     });
 }
 
-var shows = []
+var shows = [];
 var last_refreshed = 0;
 init();
