@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify');
 var htmlreplace = require('gulp-html-replace');
 var cleanCSS = require('gulp-clean-css');
 var babel = require('gulp-babel');
+var minifyejs = require('gulp-minify-ejs');
 
 var jsDest = 'dist/scripts';
 
@@ -26,7 +27,13 @@ gulp.task('es6', function() {
       presets: ['es2015']
     }))
     .pipe(gulp.dest('dist/scripts'));
-})
+});
+
+gulp.task('ejs', function() {
+  return gulp.src('*.ejs')
+    .pipe(minifyejs())
+    .pipe(gulp.dest('dist'));
+});
 
 gulp.task('js', ['es6'], function() {
   return gulp.src(jsFiles)
@@ -52,13 +59,8 @@ gulp.task('css', function() {
 });
 
 gulp.task('fonts', function() {
-  return gulp.src('lib/font-awesome-4.6.3/fonts/*')
+  return gulp.src('node_modules/font-awesome/fonts/*')
     .pipe(gulp.dest('dist/fonts'));
 });
 
-gulp.task('copy', function() {
-  return gulp.src(['index.js', '*.ejs'])
-    .pipe(gulp.dest('dist'));
-});
-
-gulp.task('default', ['index', 'js', 'css', 'fonts', 'copy']);
+gulp.task('default', ['index', 'js', 'css', 'fonts', 'ejs']);
