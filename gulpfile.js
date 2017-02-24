@@ -31,7 +31,7 @@ gulp.task('es6', function() {
 
 gulp.task('ejs', function() {
   return gulp.src('*.ejs')
-    .pipe(minifyejs())
+    //.pipe(minifyejs())
     .pipe(gulp.dest('dist'));
 });
 
