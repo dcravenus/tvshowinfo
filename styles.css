@@ -16,6 +16,10 @@ body {
   color: #d8d8d8;
 }
 
+#sidebar input {
+  color: black;
+}
+
 div[id*="show-title"] {
   cursor: pointer;
 }
@@ -39,6 +43,10 @@ hr {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+}
+
+i {
+  cursor: pointer;
 }
 
 @media (max-width: 720px) {
