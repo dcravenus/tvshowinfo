@@ -26,7 +26,7 @@
                 <table class='table'>
                 <tr><th>Episode</th><th>Name</th><th>Airdate</th></tr>
                 <% season.forEach(function(episode){%>
-                    <tr><td><%=episode.number%></td><td><%=episode.name%></td><td><%=episode.airdate%></td></tr>
+                    <tr><td><%=episode.number%></td><td class="episode-name <%=episode.strikethrough ? 'strikethrough' : ''%>" data-show-id="<%=id%>" data-season-id="<%=index+1%>" data-episode-id="<%=episode.number%>" onclick="toggleStrikethrough(this)"><%=episode.name%></td><td><%=episode.airdate%></td></tr>
                 <%})%>
                 </table>
             </div>

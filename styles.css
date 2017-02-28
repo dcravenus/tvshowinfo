@@ -49,6 +49,14 @@ i {
   cursor: pointer;
 }
 
+.episode-name {
+  cursor: pointer;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
 @media (max-width: 720px) {
   #sidebar {
     position: relative;

@@ -130,6 +130,29 @@ function sortShowByName(a, b){
     return 0;
 }
 
+function toggleStrikethrough(el){
+    var showId = parseInt(el.dataset.showId);
+    var seasonId = parseInt(el.dataset.seasonId);
+    var episodeId = parseInt(el.dataset.episodeId);
+    var episode;
+
+    var show = shows.find((show)=>showId===show.id);
+    if(show){
+        episode = show['_embedded']['episodes'].find((episode)=>episodeId===episode.number && seasonId===episode.season);
+    }
+
+    if(episode){
+        el.classList.toggle('strikethrough');
+
+        if(el.classList.contains('strikethrough')){
+            episode.strikethrough = true;
+        } else {
+            episode.strikethrough = false;
+        }
+        localforage.setItem('shows', shows);
+    }
+}
+
 function init() {
 
     document.addEventListener("DOMContentLoaded", function(event) {
