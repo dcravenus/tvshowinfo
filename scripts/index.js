@@ -75,7 +75,7 @@ function refreshShow(show_id) {
     getShowData(show_id).then(function (show_data) {
         shows.forEach(function (show, index) {
             if (show.id === show_id) {
-                shows[index] = show_data;
+                updateShowData(index, show_data);
             }
             appendShow(show_data);
         });
@@ -91,6 +91,16 @@ function refreshShows() {
     shows.forEach(function (show) {
         refreshShow(show.id);
     });
+}
+
+function updateShowData(show_index, new_data) {
+    shows[show_index]['_embedded']['episodes'].forEach(function (episode, index) {
+        if (episode.strikethrough) {
+            new_data['_embedded']['episodes'][index].strikethrough = true;
+        }
+    });
+
+    shows[show_index] = new_data;
 }
 
 function updateLastUpdated() {
