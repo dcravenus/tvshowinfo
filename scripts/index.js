@@ -12,6 +12,16 @@ function addShow(show_id) {
     }
 }
 
+function addImportedShow(imported_show) {
+    if (!shows.find(function (show) {
+        return imported_show.id === show.id;
+    })) {
+        shows.push(imported_show);
+        localforage.setItem('shows', shows);
+        appendShow(imported_show);
+    }
+}
+
 function removeShow(show_id) {
     shows = shows.filter(function (show) {
         return show.id != show_id;
@@ -171,6 +181,26 @@ function toggleStrikethrough(el) {
     }
 }
 
+function exportShows() {
+    var dataString = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(shows));
+    var downloadLink = document.getElementById('download-link');
+    downloadLink.setAttribute('href', dataString);
+    downloadLink.setAttribute('download', 'shows.json');
+    downloadLink.click();
+}
+
+function importShows(file) {
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        var imported_shows = JSON.parse(event.target.result);
+        imported_shows.forEach(function (imported_show) {
+            addImportedShow(imported_show);
+        });
+    };
+
+    reader.readAsText(file);
+}
+
 function init() {
 
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -190,6 +220,18 @@ function init() {
         var refresh_shows_button = document.getElementById('button-refresh-shows');
         refresh_shows_button.addEventListener('click', function () {
             refreshShows();
+        });
+
+        document.getElementById('export-button').addEventListener('click', function () {
+            exportShows();
+        });
+
+        document.getElementById('import-button').addEventListener('click', function () {
+            document.getElementById('upload-input').click();
+        });
+
+        document.getElementById('upload-input').addEventListener('change', function () {
+            importShows(this.files[0]);
         });
     });
 
