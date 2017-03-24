@@ -96,3 +96,7 @@ i {
     width: 20em;
   }
 }
+
+.hidden {
+  display: none;
+}
