@@ -1,4 +1,4 @@
-# [TV Showtimes App](http://www.derrickcraven.com/tvshowinfo/)
+# TV Showtimes App
 I wanted an easier way to view when my favorite TV shows air new episodes so I built a simple TV Showtimes app.
           The app uses the TVmaze API to load basic metadata about different TV shows. The app stores all its data on the client to reduce API calls and increase page load speed.
           
