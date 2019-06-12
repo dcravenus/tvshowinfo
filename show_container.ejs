@@ -5,8 +5,7 @@
             <img src="<%=image.medium%>" />
         </div>
         <div>
-            <h4>Latest Episode: S<%=_embedded.previousepisode.season%>E<%=_embedded.previousepisode.number%> - <%=_embedded.previousepisode.name%></h4>
-
+            <h4>Latest Episode: <% if(_embedded.previousepisode) {%> S<%=_embedded.previousepisode.season%>E<%=_embedded.previousepisode.number%> - <%=_embedded.previousepisode.name%><% }%></h4>
             <%
             //Create seasons array
             _embedded.episodes.reduce(function(array, episode){
